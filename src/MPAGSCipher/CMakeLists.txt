@@ -3,6 +3,7 @@
 # - Declare the build of the static MPAGSCipher library
 add_library(MPAGSCipher STATIC
   Alphabet.hpp
+  Cipher.hpp
   CaesarCipher.hpp
   CaesarCipher.cpp
   CipherMode.hpp
@@ -13,6 +14,8 @@ add_library(MPAGSCipher STATIC
   ProcessCommandLine.cpp
   TransformChar.hpp
   TransformChar.cpp
+  VigenereCipher.hpp
+  VigenereCipher.cpp
   )
 
 target_include_directories(MPAGSCipher
