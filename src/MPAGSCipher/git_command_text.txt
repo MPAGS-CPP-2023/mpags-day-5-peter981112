@@ -1,0 +1,79 @@
+git command
+
+
+git command text
+git config --global user.name "wonjong chang"
+git config --global user.email "Wonjong.Chang@warwick.ac.uk"
+git add file to add
+git commit -m  "pure virtual class applied"
+ssh-keygen -t ed25519
+git push
+
+git add VigenereCipher.cpp
+git add VigenereCipher.hpp
+git add ProcessCommandLine.cpp
+git add CipherType.hpp
+git add CMakeLists.txt 
+git add Cipher.hpp
+
+g++ -std=c++11 -o mpags-cipher mpags-cipher.cpp
+
+./mpags-cipher -c caesar -i test_tx.txt -o enc.txt -k 5 --encrypt
+./mpags-cipher -c caesar -i enc.txt -o dec.txt -k 5 --decrypt
+
+./mpags-cipher -c vigenere -i test_tx.txt -o enc.txt -k hello --encrypt
+./mpags-cipher -c vigenere -i enc.txt -o dec.txt -k hello --decrypt
+
+./mpags-cipher -c playfair -i test_tx.txt -o enc.txt -k ola --encrypt
+./mpags-cipher -c playfair -i enc.txt -o dec.txt -k ola --decrypt
+
+./mpags-cipher --multi-cipher 2 -c vigenere playfair -i test_tx.txt -o enc.txt -k hello ola --encrypt
+./mpags-cipher --multi-cipher 2 -c vigenere playfair -i enc.txt -o dec.txt -k hello ola --decrypt
+
+./mpags-cipher --multi-cipher 4 -c vigenere playfair vigenere playfair -i test_tx.txt -o enc.txt -k hello ola butter dawn --encrypt
+./mpags-cipher --multi-cipher 4 -c vigenere playfair vigenere playfair -i enc.txt -o dec.txt -k hello ola butter dawn --decrypt
+
+CMake command
+
+cmake src
+make -j4
+
+CMAKE backup
+
+# - Main CMake buildscript for mpags-cipher
+# Comments in a CMake Script are lines begining with a '#'
+
+# - Set CMake requirements then declare project
+cmake_minimum_required(VERSION 3.2)
+project(MPAGSCipher VERSION 0.2.0)
+
+# - When Makefiles are generated, output all command lines by default
+#   Do this to begin with so it's easy to see what compiler command/flags
+#   are used. This can also be done by removing the 'set' command and
+#   running make as 'make VERBOSE=1'.
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# - Don't allow C++ Compiler Vendor Extensions
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# - Use our standard set of flags
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -Wshadow -pedantic")
+
+# - Declare the build of mpags-cipher main program
+add_executable(mpags-cipher
+  mpags-cipher.cpp
+  MPAGSCipher/TransformChar.hpp
+  MPAGSCipher/TransformChar.cpp
+  MPAGSCipher/ProcessCommandLine.cpp
+  MPAGSCipher/ProcessCommandLine.hpp
+  MPAGSCipher/RunCaesarCipher.cpp
+  MPAGSCipher/RunCaesarCipher.hpp
+  )
+
+target_include_directories(mpags-cipher
+  PRIVATE MPAGSCipher
+  )
+
+target_compile_features(mpags-cipher
+  PRIVATE cxx_auto_type cxx_range_for cxx_uniform_initialization
+  )
