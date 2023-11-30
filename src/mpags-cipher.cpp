@@ -100,10 +100,28 @@ int main(int argc, char* argv[])
         std::cerr<<"[error] problem costricting requested cipher"<<std::endl;
         return 1;
     }
+    
+    std::vector<std::unique_ptr<Cipher>> ciphers;
+    std::size_t nCiphers{settings.cipherType.size()};
+    std::string outputText;
+    for(std::size_t i=0;i<nCiphers;++i) //init ciphers
+    {
+        ciphers.push_back(CipherFactory::makeCipher(settings.cipherType[i], settings.cipherKey[i]));
+    }
+    for(std::size_t i=0;i<nCiphers;++i)
+    {
 
-    const std::string outputText{
-        cipher->applyCipher(inputText, settings.cipherMode)
-    };
+        if(settings.cipherMode == CipherMode::Encrypt){
+            outputText = ciphers[i]->applyCipher(inputText, settings.cipherMode);
+        
+        }
+        else if(settings.cipherMode == CipherMode::Decrypt){
+            outputText = ciphers[nCiphers-i-1]->applyCipher(inputText, settings.cipherMode);
+        
+        }
+        inputText = outputText;
+    }
+
 
     // Output the encrypted/decrypted text to stdout/file
     if (!settings.outputFile.empty()) {
