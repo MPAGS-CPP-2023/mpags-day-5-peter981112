@@ -53,20 +53,9 @@ std::string VigenereCipher::applyCipher(const std::string& inputText,
     for (int i=0; i<len; i++) {
         temp_key = key_int_lst[i%key_len];
         temp_str = temp_str+inputText[i];
-        switch (cipherMode) {
-            case CipherMode::Encrypt:
-            {
-                CaesarCipher cipher{temp_key};
-                temp_str = cipher.applyCipher(temp_str, CipherMode::Encrypt);
-                break;
-            }
-            case CipherMode::Decrypt:
-            {
-                CaesarCipher cipher{temp_key};
-                temp_str = cipher.applyCipher(temp_str, CipherMode::Decrypt);
-                break;
-            }
-        }
+
+        const CaesarCipher cipher{temp_key};
+        temp_str = cipher.applyCipher(temp_str, cipherMode); //de, en crypt text
 
         // Add the new character to the output text
         outputText += temp_str;
